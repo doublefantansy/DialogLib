@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -18,15 +19,16 @@ import android.widget.TextView;
  * @author cc
  */
 public class MyDialog extends View implements MyDialogInterface {
-    PopupWindow popupWindow;
-    private TextView msg;
-    private MyDialog dialog;
-    private int type;
     public static final int PROGRESS_DIALOG = 0;
     public static final int SUCCESS_DIALOG = 1;
+    PopupWindow popupWindow;
+    private TextView msg;
+    HookView hookView;
+    private MyDialog dialog;
+    private int type;
     private Context context;
     private WindowManager.LayoutParams ll;
-    private View view;
+    CancelListener cancelListener;
 
     public MyDialog(@NonNull Context context, int type) {
         super(context);
@@ -42,7 +44,7 @@ public class MyDialog extends View implements MyDialogInterface {
                 .getAttributes();
         switch (type) {
             case PROGRESS_DIALOG: {
-                view = LayoutInflater.from(getContext())
+                View view = LayoutInflater.from(getContext())
                         .inflate(R.layout.loading, null, false);
                 popupWindow.setContentView(view);
                 popupWindow.setWidth(Util.dipTopx(context, 250));
@@ -59,12 +61,22 @@ public class MyDialog extends View implements MyDialogInterface {
                 break;
             }
             case SUCCESS_DIALOG: {
-                view = LayoutInflater.from(getContext())
+                View view = LayoutInflater.from(getContext())
                         .inflate(R.layout.success, null, false);
                 popupWindow.setContentView(view);
                 popupWindow.setWidth(Util.dipTopx(context, 250));
                 popupWindow.setHeight(Util.dipTopx(context, 180));
                 popupWindow.setOutsideTouchable(false);
+                hookView = view.findViewById(R.id.hookView);
+                hookView.startCircle();
+                msg = view.findViewById(R.id.text);
+                Button button = view.findViewById(R.id.cancel);
+                button.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cancelListener.onClick(dialog);
+                    }
+                });
             }
             default: {
                 break;
@@ -96,5 +108,17 @@ public class MyDialog extends View implements MyDialogInterface {
         ll.alpha = alpha;
         ((Activity) context).getWindow()
                 .setAttributes(ll);
+    }
+
+    @Override
+    public MyDialog setHookColor(int color) {
+        hookView.setColor(color);
+        return dialog;
+    }
+
+    @Override
+    public MyDialog setCancelListener(CancelListener cancelListener) {
+        this.cancelListener = cancelListener;
+        return dialog;
     }
 }

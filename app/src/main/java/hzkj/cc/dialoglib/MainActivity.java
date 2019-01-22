@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import hzkj.cc.loadingdialog.CancelListener;
 import hzkj.cc.loadingdialog.MyDialog;
 
 /**
@@ -19,7 +20,14 @@ public class MainActivity extends AppCompatActivity {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MyDialog(MainActivity.this, MyDialog.SUCCESS_DIALOG)
+                new MyDialog(MainActivity.this, MyDialog.SUCCESS_DIALOG).setMessage("登录成功")
+                        .setHookColor(getResources().getColor(R.color.green))
+                        .setCancelListener(new CancelListener() {
+                            @Override
+                            public void onClick(MyDialog myDialog) {
+                                myDialog.dismiss();
+                            }
+                        })
                         .showInCenter();
             }
         });
