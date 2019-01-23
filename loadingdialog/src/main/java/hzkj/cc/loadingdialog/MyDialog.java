@@ -50,6 +50,7 @@ public class MyDialog extends View implements MyDialogInterface {
                 popupWindow.setWidth(Util.dipTopx(context, 250));
                 popupWindow.setHeight(Util.dipTopx(context, 180));
                 popupWindow.setOutsideTouchable(false);
+                popupWindow.setFocusable(true);
                 ImageView image = view.findViewById(R.id.image);
                 msg = view.findViewById(R.id.tv_text);
                 ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(image, "rotation", 0, 360);
@@ -67,6 +68,7 @@ public class MyDialog extends View implements MyDialogInterface {
                 popupWindow.setWidth(Util.dipTopx(context, 250));
                 popupWindow.setHeight(Util.dipTopx(context, 180));
                 popupWindow.setOutsideTouchable(false);
+                popupWindow.setFocusable(true);
                 hookView = view.findViewById(R.id.hookView);
                 hookView.startCircle();
                 msg = view.findViewById(R.id.text);
