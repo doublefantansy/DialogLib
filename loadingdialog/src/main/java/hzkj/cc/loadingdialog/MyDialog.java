@@ -21,14 +21,14 @@ import android.widget.TextView;
 public class MyDialog extends View implements MyDialogInterface {
     public static final int PROGRESS_DIALOG = 0;
     public static final int SUCCESS_DIALOG = 1;
-    PopupWindow popupWindow;
+    private PopupWindow popupWindow;
     private TextView msg;
-    HookView hookView;
+    private HookView hookView;
     private MyDialog dialog;
     private int type;
     private Context context;
     private WindowManager.LayoutParams ll;
-    CancelListener cancelListener;
+    private CancelListener cancelListener;
 
     public MyDialog(@NonNull Context context, int type) {
         super(context);
