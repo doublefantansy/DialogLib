@@ -21,7 +21,6 @@ interface MyDialogInterface {
 
     void setDialogAlpha(float alpha);
 
-    MyDialog setHookColor(int color);
 
     MyDialog setCancelListener(CancelListener cancelListener);
 }

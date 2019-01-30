@@ -21,6 +21,7 @@ import android.widget.TextView;
 public class MyDialog extends View implements MyDialogInterface {
     public static final int PROGRESS_DIALOG = 0;
     public static final int SUCCESS_DIALOG = 1;
+    public static final int FAIL_DIALOG = 2;
     private PopupWindow popupWindow;
     private TextView msg;
     private HookView hookView;
@@ -29,6 +30,8 @@ public class MyDialog extends View implements MyDialogInterface {
     private Context context;
     private WindowManager.LayoutParams ll;
     private CancelListener cancelListener;
+    private ErrorView errorView;
+    private Button button;
 
     public MyDialog(@NonNull Context context, int type) {
         super(context);
@@ -42,15 +45,15 @@ public class MyDialog extends View implements MyDialogInterface {
         popupWindow = new PopupWindow();
         ll = ((Activity) context).getWindow()
                 .getAttributes();
+        popupWindow.setWidth(Util.dipTopx(context, 250));
+        popupWindow.setHeight(Util.dipTopx(context, 180));
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
         switch (type) {
             case PROGRESS_DIALOG: {
                 View view = LayoutInflater.from(getContext())
                         .inflate(R.layout.loading, null, false);
                 popupWindow.setContentView(view);
-                popupWindow.setWidth(Util.dipTopx(context, 250));
-                popupWindow.setHeight(Util.dipTopx(context, 180));
-                popupWindow.setOutsideTouchable(false);
-                popupWindow.setFocusable(true);
                 ImageView image = view.findViewById(R.id.image);
                 msg = view.findViewById(R.id.tv_text);
                 ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(image, "rotation", 0, 360);
@@ -65,20 +68,21 @@ public class MyDialog extends View implements MyDialogInterface {
                 View view = LayoutInflater.from(getContext())
                         .inflate(R.layout.success, null, false);
                 popupWindow.setContentView(view);
-                popupWindow.setWidth(Util.dipTopx(context, 250));
-                popupWindow.setHeight(Util.dipTopx(context, 180));
-                popupWindow.setOutsideTouchable(false);
-                popupWindow.setFocusable(true);
                 hookView = view.findViewById(R.id.hookView);
                 hookView.startCircle();
                 msg = view.findViewById(R.id.text);
-                Button button = view.findViewById(R.id.cancel);
-                button.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        cancelListener.onClick(dialog);
-                    }
-                });
+                button = view.findViewById(R.id.cancel);
+                break;
+            }
+            case FAIL_DIALOG: {
+                View view = LayoutInflater.from(getContext())
+                        .inflate(R.layout.fail, null, false);
+                popupWindow.setContentView(view);
+                errorView = view.findViewById(R.id.errorView);
+                errorView.startCircle();
+                msg = view.findViewById(R.id.text);
+                button = view.findViewById(R.id.cancel);
+                break;
             }
             default: {
                 break;
@@ -113,14 +117,14 @@ public class MyDialog extends View implements MyDialogInterface {
     }
 
     @Override
-    public MyDialog setHookColor(int color) {
-        hookView.setColor(color);
-        return dialog;
-    }
-
-    @Override
-    public MyDialog setCancelListener(CancelListener cancelListener) {
+    public MyDialog setCancelListener(final CancelListener cancelListener) {
         this.cancelListener = cancelListener;
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyDialog.this.cancelListener.onClick(dialog);
+            }
+        });
         return dialog;
     }
 }

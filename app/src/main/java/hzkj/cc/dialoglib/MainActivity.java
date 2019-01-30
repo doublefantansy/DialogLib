@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MyDialog(MainActivity.this, MyDialog.SUCCESS_DIALOG).setMessage("登录成功")
-                        .setHookColor(getResources().getColor(R.color.green))
+                new MyDialog(MainActivity.this, MyDialog.FAIL_DIALOG)
+                        .setMessage("登录过期,即将重新登录")
                         .setCancelListener(new CancelListener() {
                             @Override
                             public void onClick(MyDialog myDialog) {

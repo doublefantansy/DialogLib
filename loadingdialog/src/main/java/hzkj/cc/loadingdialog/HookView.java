@@ -6,24 +6,22 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 public class HookView extends View {
-    Paint paint = new Paint();
-    Path path = new Path();
     private ValueAnimator circleAnimator;
     ValueAnimator hookAnimator;
+    Paint paint;
+    Path path;
+    Point currentPoint;
 
     public HookView(Context context) {
         super(context);
-        init();
     }
 
     public HookView(Context context, @Nullable AttributeSet attrs) {
@@ -32,23 +30,12 @@ public class HookView extends View {
     }
 
     private void init() {
+        paint = new Paint();
+        path = new Path();
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(10);
+        paint.setStrokeWidth(15);
         paint.setAntiAlias(true);
-        paint.setColor(Color.GREEN);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.drawPath(path, paint);
-    }
-
-    public void setColor(int color) {
-        paint.setColor(color);
-    }
-
-    public void startCircle() {
+        paint.setColor(getResources().getColor(R.color.dialog_green));
         circleAnimator = ObjectAnimator.ofFloat(0, 360);
         circleAnimator.setInterpolator(new LinearInterpolator());
         circleAnimator.setDuration(1000);
@@ -65,23 +52,39 @@ public class HookView extends View {
                 startHook();
             }
         });
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        canvas.drawPath(path, paint);
+    }
+
+    public void setColor(int color) {
+        paint.setColor(color);
+    }
+
+    public void startCircle() {
         circleAnimator.start();
     }
 
+    public void endCircle() {
+        circleAnimator.end();
+    }
+
     private void startHook() {
-        path.moveTo((float) (getWidth() / 3.5), getHeight() / 2);
-        hookAnimator = ValueAnimator.ofFloat(0, 8);
+        path.moveTo(getWidth() / 4, getHeight() / 2);
+        Point startPoint = new Point(getWidth() / 4, getHeight() / 2);
+        Point middlePoint = new Point(getWidth() * 7 / 15, getHeight() * 11 / 16);
+        Point endPoint = new Point(getWidth() * 3 / 4, getHeight() * 1 / 3);
+        hookAnimator = ValueAnimator.ofObject(new PointEvaluator(), startPoint, middlePoint, endPoint);
         hookAnimator.setInterpolator(new LinearInterpolator());
         hookAnimator.setDuration(500);
         hookAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float progress = (float) animation.getAnimatedValue();
-                if (progress < 5) {
-                    path.rLineTo(progress, progress);
-                } else {
-                    path.rLineTo(progress, -progress);
-                }
+                currentPoint = (Point) (animation.getAnimatedValue());
+                path.lineTo(currentPoint.x, currentPoint.y);
                 postInvalidate();
             }
         });

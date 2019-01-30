@@ -11,8 +11,8 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <hzkj.cc.loadingdialog.HookView
-            android:id="@+id/hookView"
+        <hzkj.cc.loadingdialog.ErrorView
+            android:id="@+id/errorView"
             android:layout_width="80dp"
             android:layout_height="80dp" />
 
@@ -20,7 +20,6 @@
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/hookView"
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:textSize="16sp"
@@ -31,7 +30,7 @@
             android:layout_width="96dp"
             android:layout_height="32dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/successbuttonstyle"
+            android:background="@drawable/failbuttonstyle"
             android:text="好的"
             android:textColor="@color/white"
             android:textSize="16sp" />
