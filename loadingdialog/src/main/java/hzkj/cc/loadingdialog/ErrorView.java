@@ -20,7 +20,11 @@ public class ErrorView extends View {
     private Path leftDownPath;
     private Path rightDownPath;
     private ValueAnimator circleAnimator;
-    private ValueAnimator forkAnimator;
+    private ValueAnimator leftUpforkAnimator;
+    private ValueAnimator rightUpforkAnimator;
+    private ValueAnimator leftDownForkAnimator;
+    private ValueAnimator rightDownForkAnimator;
+    private Point currentPoint;
 
     public ErrorView(Context context) {
         super(context);
@@ -65,21 +69,59 @@ public class ErrorView extends View {
         rightUpPath.moveTo((float) (getWidth() / 2), getHeight() / 2);
         leftDownPath.moveTo((float) (getWidth() / 2), getHeight() / 2);
         rightDownPath.moveTo((float) (getWidth() / 2), getHeight() / 2);
-        forkAnimator = ValueAnimator.ofFloat(0, getWidth() / 70);
-        forkAnimator.setInterpolator(new LinearInterpolator());
-        forkAnimator.setDuration(500);
-        forkAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        Point startPoint = new Point(getWidth() / 2, getHeight() / 2);
+        Point leftUpEndPoint = new Point(getWidth() * 3 / 10, getHeight() * 3 / 10);
+        Point rightUpEndPoint = new Point(getWidth() * 7 / 10, getHeight() * 3 / 10);
+        Point leftDownEndPoint = new Point(getWidth() * 3 / 10, getHeight() * 7 / 10);
+        Point rightDownEndPoint = new Point(getWidth() * 7 / 10, getHeight() * 7 / 10);
+        leftUpforkAnimator = ValueAnimator.ofObject(new PointEvaluator(), startPoint, leftUpEndPoint);
+        leftUpforkAnimator.setInterpolator(new LinearInterpolator());
+        leftUpforkAnimator.setDuration(500);
+        leftUpforkAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float progress = (float) animation.getAnimatedValue();
-                leftUpPath.rLineTo(-progress, -progress);
-                rightUpPath.rLineTo(progress, -progress);
-                leftDownPath.rLineTo(-progress, progress);
-                rightDownPath.rLineTo(progress, progress);
+                currentPoint = (Point) (animation.getAnimatedValue());
+                leftUpPath.lineTo(currentPoint.x, currentPoint.y);
                 postInvalidate();
             }
         });
-        forkAnimator.start();
+        leftUpforkAnimator.start();
+        rightUpforkAnimator = ValueAnimator.ofObject(new PointEvaluator(), startPoint, rightUpEndPoint);
+        rightUpforkAnimator.setInterpolator(new LinearInterpolator());
+        rightUpforkAnimator.setDuration(500);
+        rightUpforkAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                currentPoint = (Point) (animation.getAnimatedValue());
+                rightUpPath.lineTo(currentPoint.x, currentPoint.y);
+                postInvalidate();
+            }
+        });
+        rightUpforkAnimator.start();
+        leftDownForkAnimator = ValueAnimator.ofObject(new PointEvaluator(), startPoint, leftDownEndPoint);
+        leftDownForkAnimator.setInterpolator(new LinearInterpolator());
+        leftDownForkAnimator.setDuration(500);
+        leftDownForkAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                currentPoint = (Point) (animation.getAnimatedValue());
+                leftDownPath.lineTo(currentPoint.x, currentPoint.y);
+                postInvalidate();
+            }
+        });
+        leftDownForkAnimator.start();
+        rightDownForkAnimator = ValueAnimator.ofObject(new PointEvaluator(), startPoint, rightDownEndPoint);
+        rightDownForkAnimator.setInterpolator(new LinearInterpolator());
+        rightDownForkAnimator.setDuration(500);
+        rightDownForkAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                currentPoint = (Point) (animation.getAnimatedValue());
+                rightDownPath.lineTo(currentPoint.x, currentPoint.y);
+                postInvalidate();
+            }
+        });
+        rightDownForkAnimator.start();
     }
 
     @Override
