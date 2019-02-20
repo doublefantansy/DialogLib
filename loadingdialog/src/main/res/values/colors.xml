@@ -7,4 +7,6 @@
     <color name="white">#ffffff</color>
     <color name="dialog_green">#24d447</color>
     <color name="dialog_red">#ff0000</color>
+    <color name="hzBlue">#1DA7ED</color>
+    <color name="hzBlue1">#afd9fc</color>
 </resources>
