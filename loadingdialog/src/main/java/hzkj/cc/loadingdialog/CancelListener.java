@@ -1,5 +1,5 @@
 package hzkj.cc.loadingdialog;
 
 public interface CancelListener {
-    void onClick(MyDialog myDialog);
+    void onClick(CcDialog dialog);
 }

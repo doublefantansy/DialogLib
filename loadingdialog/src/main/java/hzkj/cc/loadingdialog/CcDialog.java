@@ -2,58 +2,42 @@ package hzkj.cc.loadingdialog;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
-/**
- * @author cc
- */
-public class MyDialog extends View implements MyDialogInterface {
+import com.afollestad.materialdialogs.MaterialDialog;
+
+public class CcDialog extends View {
     public static final int PROGRESS_DIALOG = 0;
     public static final int SUCCESS_DIALOG = 1;
     public static final int FAIL_DIALOG = 2;
-    private PopupWindow popupWindow;
-    private TextView msg;
-    private HookView hookView;
-    private MyDialog dialog;
     private int type;
-    private Context context;
-    private WindowManager.LayoutParams ll;
+    MaterialDialog dialog;
+    private HookView hookView;
+    private TextView msg;
+    private Button button;
     private CancelListener cancelListener;
     private ErrorView errorView;
-    private Button button;
 
-    public MyDialog(@NonNull Context context, int type) {
+    public CcDialog(Context context, int type) {
         super(context);
         this.type = type;
-        this.context = context;
-        dialog = this;
         init();
     }
 
     private void init() {
-        popupWindow = new PopupWindow();
-        ll = ((Activity) context).getWindow()
-                .getAttributes();
-        popupWindow.setWidth(Util.dipTopx(context, 250));
-        popupWindow.setHeight(Util.dipTopx(context, 180));
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getContext());
         switch (type) {
             case PROGRESS_DIALOG: {
                 View view = LayoutInflater.from(getContext())
                         .inflate(R.layout.loading, null, false);
-                popupWindow.setContentView(view);
+                dialog = builder.customView(view, true)
+                        .build();
                 ImageView image = view.findViewById(R.id.image);
                 msg = view.findViewById(R.id.tv_text);
                 ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(image, "rotation", 0, 360);
@@ -67,7 +51,8 @@ public class MyDialog extends View implements MyDialogInterface {
             case SUCCESS_DIALOG: {
                 View view = LayoutInflater.from(getContext())
                         .inflate(R.layout.success, null, false);
-                popupWindow.setContentView(view);
+                dialog = builder.customView(view, true)
+                        .build();
                 hookView = view.findViewById(R.id.hookView);
                 hookView.startCircle();
                 msg = view.findViewById(R.id.text);
@@ -77,54 +62,40 @@ public class MyDialog extends View implements MyDialogInterface {
             case FAIL_DIALOG: {
                 View view = LayoutInflater.from(getContext())
                         .inflate(R.layout.fail, null, false);
-                popupWindow.setContentView(view);
+                dialog = builder.customView(view, true)
+                        .build();
                 errorView = view.findViewById(R.id.errorView);
                 errorView.startCircle();
                 msg = view.findViewById(R.id.text);
                 button = view.findViewById(R.id.cancel);
                 break;
             }
-            default: {
-                break;
-            }
         }
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow()
+                .setBackgroundDrawableResource(android.R.color.transparent);
     }
 
-    @Override
-    public MyDialog setMessage(String message) {
-        msg.setText(message);
-        return dialog;
+    public void showDialog() {
+        dialog.show();
     }
 
-    @Override
-    public void dismiss() {
-        popupWindow.dismiss();
-        setDialogAlpha(1f);
-    }
-
-    @Override
-    public void showInCenter() {
-        popupWindow.showAtLocation(((Activity) context).getWindow()
-                .getDecorView(), Gravity.CENTER, 0, 0);
-        setDialogAlpha(0.5f);
-    }
-
-    @Override
-    public void setDialogAlpha(float alpha) {
-        ll.alpha = alpha;
-        ((Activity) context).getWindow()
-                .setAttributes(ll);
-    }
-
-    @Override
-    public MyDialog setCancelListener(final CancelListener cancelListener) {
+    public CcDialog setCancelListener(CancelListener cancelListener) {
         this.cancelListener = cancelListener;
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyDialog.this.cancelListener.onClick(dialog);
-            }
-        });
-        return dialog;
+        if (button != null) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    CcDialog.this.cancelListener.onClick(CcDialog.this);
+                }
+            });
+        }
+        return this;
+    }
+
+    public CcDialog setMessage(String message) {
+        msg.setText(message);
+        return this;
     }
 }
