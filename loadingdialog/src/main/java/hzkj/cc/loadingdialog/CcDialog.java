@@ -80,14 +80,20 @@ public class CcDialog extends View {
         dialog.show();
     }
 
-    public CcDialog setCancelListener(CancelListener cancelListener) {
+    public void dismissDialog() {
+        dialog.dismiss();
+    }
+
+    public CcDialog setCancelListener(final CancelListener cancelListener) {
         this.cancelListener = cancelListener;
         if (button != null) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
-                    CcDialog.this.cancelListener.onClick(CcDialog.this);
+                    if (CcDialog.this.cancelListener != null) {
+                        CcDialog.this.cancelListener.onClick(CcDialog.this);
+                    }
                 }
             });
         }
