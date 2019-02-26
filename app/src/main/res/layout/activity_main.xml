@@ -10,10 +10,5 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="222"/>
-    <Button
-        android:id="@+id/ss"
-        android:layout_width="wrap_content"
-        android:layout_toRightOf="@id/s"
-        android:layout_height="wrap_content"
-        android:text="222222"/>
+
 </RelativeLayout>

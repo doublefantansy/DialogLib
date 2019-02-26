@@ -3,9 +3,9 @@ package hzkj.cc.dialoglib;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
-import hzkj.cc.loadingdialog.CancelListener;
+import com.xuexiang.xui.XUI;
+
 import hzkj.cc.loadingdialog.CcDialog;
 
 /**
@@ -14,25 +14,13 @@ import hzkj.cc.loadingdialog.CcDialog;
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        XUI.initTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.ss).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "in", Toast.LENGTH_SHORT)
-                        .show();
-            }
-        });
         findViewById(R.id.s).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CcDialog(MainActivity.this, CcDialog.PROGRESS_DIALOG).setCancelListener(new CancelListener() {
-                    @Override
-                    public void onClick(CcDialog dialog) {
-                    }
-                })
-                        .setMessage("登录失败")
-                        .showDialog();
+              new CcDialog(MainActivity.this,CcDialog.FAIL_DIALOG).setMessage("ccc").showDialog();
             }
         });
     }
