@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.s).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              new CcDialog(MainActivity.this,CcDialog.FAIL_DIALOG).setMessage("ccc").showDialog();
+              new CcDialog(MainActivity.this,CcDialog.SUCCESS_DIALOG).setMessage("ccc").showDialog();
             }
         });
     }

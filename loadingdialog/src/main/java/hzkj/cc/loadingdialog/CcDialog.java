@@ -30,7 +30,7 @@ public class CcDialog extends View {
     }
 
     private void init() {
-       dialog=new Dialog(getContext());
+        dialog = new Dialog(getContext());
         switch (type) {
             case PROGRESS_DIALOG: {
                 View view = LayoutInflater.from(getContext())
@@ -68,6 +68,7 @@ public class CcDialog extends View {
             }
         }
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         dialog.getWindow()
                 .setBackgroundDrawableResource(android.R.color.transparent);
     }
