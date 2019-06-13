@@ -104,9 +104,9 @@ public class AttdenceView extends View {
         float width = rect.width();
         float height = rect.height();
         Path path = new Path();
-        path.addCircle(getWidth() / 2, getHeight() / 2, Util.dipTopx(getContext(), 30), Path.Direction.CW);
+        path.addCircle(getWidth() / 2, getHeight() / 2, getWidth()/2-Util.dipTopx(getContext(), 6), Path.Direction.CW);
         Path path1 = new Path();
-        path1.addCircle(getWidth() / 2, getHeight() / 2, Util.dipTopx(getContext(), 36), Path.Direction.CW);
+        path1.addCircle(getWidth() / 2, getHeight() / 2, getWidth()/2, Path.Direction.CW);
         canvas.drawPath(path1, bigCirclePaint);
         canvas.drawPath(path, paint);
         canvas.drawText(text, getWidth() / 2 - width / 2, getHeight() / 2 + height / 2, textPaint);
