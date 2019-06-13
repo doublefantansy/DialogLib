@@ -22,6 +22,7 @@ public class AttdenceView extends View {
     private float y;
     AttdenceViewListenner listenner;
     String text;
+    int textSize = 14;
 
     public void setText(String text) {
         this.text = text;
@@ -84,6 +85,10 @@ public class AttdenceView extends View {
         }
     }
 
+    public void setTextSize(int sp) {
+        textSize = sp;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -92,7 +97,8 @@ public class AttdenceView extends View {
         paint.setColor(inCircleColor);
         paint.setStyle(Paint.Style.FILL);
         textPaint.setColor(Color.WHITE);
-        textPaint.setTextSize(Util.sp2px(getContext(), 14));
+        textPaint.setAntiAlias(true);
+        textPaint.setTextSize(Util.sp2px(getContext(), textSize));
         Rect rect = new Rect();
         textPaint.getTextBounds(text, 0, text.length(), rect);
         float width = rect.width();
