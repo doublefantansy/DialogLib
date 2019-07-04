@@ -15,6 +15,7 @@ public class CcDialog extends View {
     public static final int PROGRESS_DIALOG = 0;
     public static final int SUCCESS_DIALOG = 1;
     public static final int FAIL_DIALOG = 2;
+    public static final int CHOOSE_DIALOG = 32;
     private int type;
     Dialog dialog;
     private HookView hookView;
@@ -62,6 +63,16 @@ public class CcDialog extends View {
                 dialog.setContentView(view);
                 errorView = view.findViewById(R.id.errorView);
                 errorView.startCircle();
+                msg = view.findViewById(R.id.text);
+                button = view.findViewById(R.id.cancel);
+                break;
+            }
+            case CHOOSE_DIALOG: {
+                View view = LayoutInflater.from(getContext())
+                        .inflate(R.layout.choose, null, false);
+                dialog.setContentView(view);
+//                errorView = view.findViewById(R.id.errorView);
+//                errorView.startCircle();
                 msg = view.findViewById(R.id.text);
                 button = view.findViewById(R.id.cancel);
                 break;

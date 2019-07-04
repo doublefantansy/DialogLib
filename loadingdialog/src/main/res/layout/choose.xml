@@ -11,16 +11,16 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <hzkj.cc.loadingdialog.HookView
-            android:id="@+id/hookView"
-            android:layout_width="80dp"
-            android:layout_height="80dp" />
+        <ImageView
+            android:id="@+id/src"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_gantanhao_3" />
 
         <TextView
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/hookView"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:textSize="16sp"
@@ -28,13 +28,13 @@
 
         <Button
             android:id="@+id/cancel"
-            android:layout_width="96dp"
-            android:layout_height="32dp"
+            android:layout_width="106dp"
+            android:layout_height="35dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/successbuttonstyle"
-            android:text="好的"
+            android:background="@drawable/failbuttonstyle"
+            android:text="你确定吗"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 </RelativeLayout>
